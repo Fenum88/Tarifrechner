@@ -19,8 +19,16 @@
 
         <!-- Label und TextBox in der ersten Zeile -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
-            <Label Content="Beitrag:" VerticalAlignment="Center" />
-            <TextBox x:Name="Beitrag" Width="200" Margin="10,0,0,0" IsReadOnly="True" />
+            <Label Content="Nettobeitrag:" VerticalAlignment="Center" />
+            <TextBox x:Name="Nettobeitrag" Width="200" Margin="10,0,0,0" IsReadOnly="True" />
+            <Label Content="Bruttobeitrag:" VerticalAlignment="Center" />
+            <TextBox x:Name="Bruttobeitrag" Width="200" Margin="10,0,0,0" IsReadOnly="True" />
+            <Label Content="Zillmerprämie:" VerticalAlignment="Center" />
+            <TextBox x:Name="Zillmerprämie" Width="200" Margin="10,0,0,0" IsReadOnly="True" />
+            <Label Content="alpha__z:" VerticalAlignment="Center" />
+            <TextBox x:Name="alpha_z" Width="200" Margin="10,0,0,0" IsReadOnly="True" />
+            <Label Content="alpha__gamma:" VerticalAlignment="Center" />
+            <TextBox x:Name="alpha_gamma" Width="200" Margin="10,0,0,0" IsReadOnly="True" /> 
         </StackPanel>
 
         <!-- DataGrid in der zweiten Zeile -->
@@ -32,7 +40,15 @@
                 <DataGridTextColumn Header="r" Binding="{Binding zins}" />
                 <DataGridTextColumn Header="1 + r" Binding="{Binding aufzinsfaktor}" />
                 <DataGridTextColumn Header="v" Binding="{Binding diskontierungsfaktor}" />
-                <DataGridTextColumn Header="LBW_Tod" Binding="{Binding lbw_tod}" />
+                <DataGridTextColumn Header="LBW__Tod" Binding="{Binding lbw_tod}" />
+                <DataGridTextColumn Header="LBW__Erleben" Binding="{Binding lbw_erleben}" />
+                <DataGridTextColumn Header="LBW__Prämie" Binding="{Binding lbw_praemie}" />
+                <DataGridTextColumn Header="LBW__Aufschubszeit" Binding="{Binding lbw_aufschubszeit}" />
+                <DataGridTextColumn Header="mVx" Binding="{Binding mVx}" />
+                <DataGridTextColumn Header="mVx__z" Binding="{Binding mVx_z}" />
+                <DataGridTextColumn Header="mVx__a" Binding="{Binding mVx_a}" />
+                <DataGridTextColumn Header="mVx__a__gez" Binding="{Binding mVx_a_gez}" />
+                <DataGridTextColumn Header="mVx__B" Binding="{Binding mVx_B}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

@@ -38,13 +38,20 @@ namespace Tarifrechner
         {
             Rechnungsgrundlage rg = Vertrag.Rechnungsgrundlage;
             Vertragsteil vt = Vertrag.Vertragsteil;
+
             vt.ea = int.Parse(EintrittsalterTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
             vt.n = int.Parse(VersicherungsdauerTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
             vt.t = int.Parse(BeitragszahldauerTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
             vt.leistung1 = double.Parse(ErlebensfallleistungTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
             vt.leistung2 = double.Parse(TodesfallleistungTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
+
             rg.mannAnteil = double.Parse(MaenneranteilTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
             rg.zins = double.Parse(ZinsTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
+            rg.alpha = double.Parse(AlphaKostenTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
+            rg.beta = double.Parse(betaTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
+            rg.gamma = double.Parse(gammaTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
+            rg.delta = double.Parse(deltaTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
+
             if (ZinsComboBox.SelectedItem != null)
             {
                 rg.isKonstantZins =  ZinsComboBox.SelectedItem.ToString().Contains("konstant");
@@ -60,15 +67,7 @@ namespace Tarifrechner
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            Vertragsteil vt = Vertrag.Vertragsteil;
-            Rechnungsgrundlage rg = Vertrag.Rechnungsgrundlage;
-            vt.ea = int.Parse(EintrittsalterTextBox.Text, System.Globalization.CultureInfo.InvariantCulture) ;
-            vt.n = int.Parse(VersicherungsdauerTextBox.Text, System.Globalization.CultureInfo.InvariantCulture) ;
-            vt.t = int.Parse(BeitragszahldauerTextBox.Text, System.Globalization.CultureInfo.InvariantCulture) ;
-            vt.leistung1 = double.Parse(ErlebensfallleistungTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
-            vt.leistung2 = double.Parse(TodesfallleistungTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
-            rg.mannAnteil = double.Parse(MaenneranteilTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);*/
+
         }
     }
 }

@@ -14,6 +14,14 @@ namespace Tarifrechner.Klassen
         public double mannAnteil { get; set; }
         //Mit konstanten Zins oder variablen Zins
         public bool isKonstantZins { get; set; }
+        //Abschlusskosten
+        public double alpha { get; set; }
+        //Inkassokosten
+        public double beta { get; set; }
+        //Verwaltungskosten
+        public double gamma { get; set; }
+        //Rentenbezugskosten
+        public double delta { get; set; }
         public Rechnungsgrundlage() { }
     }
 }
