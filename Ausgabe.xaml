@@ -1,0 +1,39 @@
+﻿<Page x:Class="Tarifrechner.Ausgabe"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Tarifrechner"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Ausgabe">
+
+    <Grid>
+        <!-- Definiere zwei Zeilen im Grid -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Für Label und TextBox -->
+            <RowDefinition Height="*"/>
+            <!-- Für das DataGrid -->
+        </Grid.RowDefinitions>
+
+        <!-- Label und TextBox in der ersten Zeile -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+            <Label Content="Beitrag:" VerticalAlignment="Center" />
+            <TextBox x:Name="Beitrag" Width="200" Margin="10,0,0,0" IsReadOnly="True" />
+        </StackPanel>
+
+        <!-- DataGrid in der zweiten Zeile -->
+        <DataGrid Grid.Row="1" x:Name="GesamtAusgabeBox" ItemsSource="{Binding GesamtOutput}" AutoGenerateColumns="False" Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="m" Binding="{Binding m}" />
+                <DataGridTextColumn Header="Alter" Binding="{Binding alter}" />
+                <DataGridTextColumn Header="qx" Binding="{Binding qx}" />
+                <DataGridTextColumn Header="r" Binding="{Binding zins}" />
+                <DataGridTextColumn Header="1 + r" Binding="{Binding aufzinsfaktor}" />
+                <DataGridTextColumn Header="v" Binding="{Binding diskontierungsfaktor}" />
+                <DataGridTextColumn Header="LBW_Tod" Binding="{Binding lbw_tod}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>
