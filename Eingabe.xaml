@@ -49,17 +49,44 @@
                 <ComboBoxItem Content="variabel" />
             </ComboBox>
 
-            <TextBlock Text="Abschlusskosten (alpha):" Margin="0,10,0,0" />
-            <TextBox Name="AlphaKostenTextBox" >0.06</TextBox>
+            <!-- Abschnitt für die Kostenfelder -->
+            <Border BorderBrush="Black" BorderThickness="1" Padding="10" Margin="0,10,0,0">
+                <StackPanel>
+                    <!-- Überschrift -->
+                    <TextBlock Text="Kostensätze" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
 
-            <TextBlock Text="Inkassokosten (beta):" Margin="0,10,0,0" />
-            <TextBox Name="betaTextBox" >0.02</TextBox>
+                    <Grid>
+                        <!-- Definiere die Zeilen für die Elemente -->
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
-            <TextBlock Text="Verwaltungskosten (gamma):" Margin="0,10,0,0" />
-            <TextBox Name="gammaTextBox" >0.001</TextBox>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Rentenbezugskosten (delta):" Margin="0,10,0,0" />
-            <TextBox Name="deltaTextBox" >0.00</TextBox>
+                        <!-- Abschlusskosten (alpha) -->
+                        <TextBlock Text="Abschlusskosten (alpha):" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Margin="0,0,10,0" />
+                        <TextBox Name="AlphaKostenTextBox" Grid.Column="1" Grid.Row="0" Text="0.06" Margin="10,5,0,5" Height="20" VerticalContentAlignment="Center"/>
+
+                        <!-- Inkassokosten (beta) -->
+                        <TextBlock Text="Inkassokosten (beta):" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="0,10,10,0" />
+                        <TextBox Name="betaTextBox" Grid.Column="1" Grid.Row="1" Text="0.02" Margin="10,5,0,5" Height="20" VerticalContentAlignment="Center"/>
+
+                        <!-- Verwaltungskosten (gamma) -->
+                        <TextBlock Text="Verwaltungskosten (gamma):" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" Margin="0,10,10,0" />
+                        <TextBox Name="gammaTextBox" Grid.Column="1" Grid.Row="2" Text="0.001" Margin="10,5,0,5" Height="20" VerticalContentAlignment="Center"/>
+
+                        <!-- Rentenbezugskosten (delta) -->
+                        <TextBlock Text="Rentenbezugskosten (delta):" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Margin="0,10,10,0" />
+                        <TextBox Name="deltaTextBox" Grid.Column="1" Grid.Row="3" Text="0.00" Margin="10,5,0,5" Height="20" VerticalContentAlignment="Center"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
 
         </StackPanel>
     </Grid>
