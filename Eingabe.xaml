@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Tarifrechner"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="800" d:DesignWidth="800"
       Title="Page1">
 
     <Grid Margin="10">
@@ -14,6 +14,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <ComboBox x:Name="TafelBox" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150"  SelectedIndex="0">
+                <ComboBoxItem Content="DAV2004" />
+                <ComboBoxItem Content="DAV2008" />
+            </ComboBox>
+            <ComboBox x:Name="OrdnungSelektionBox" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150"  SelectedIndex="0">
+                <ComboBoxItem Content="1.O. Selektion" />
+                <ComboBoxItem Content="1.O. Aggregat" />
+                <ComboBoxItem Content="2.O. Selektion" />
+                <ComboBoxItem Content="2.O. Aggregat" />
+            </ComboBox>
             <TextBlock Text="Eintrittsalter:" />
             <TextBox Name="EintrittsalterTextBox" >30</TextBox>
 
