@@ -407,16 +407,18 @@ namespace Tarifrechner.Klassen
             0.342930    ,0.361012    ,0.379567    ,0.398606    ,0.418136    ,0.438167    ,0.458705    ,0.479752    ,
             0.501312    ,0.523382    ,0.545956    ,0.569024    ,0.592570    ,0.616569    ,0.640988    ,0.665783    ,
             0.690898    ,1.000000    ,                               ]];
-        public DAV2004(double t_1, double t_2, int policenbeginnjahr, int eintrittsalter, int N, List<Tafel> tafelListe)
+        private string Ordnung = "1.O.Selektion";
+        public DAV2004(double t_1, double t_2, int policenbeginnjahr, int eintrittsalter, int N, List<Tafel> tafelListe, string ordnung)
         {
             T_1 = t_1;
             T_2 = t_2;
+            Ordnung = ordnung;
             Policenbeginnjahr = policenbeginnjahr;
             Eintrittsalter = eintrittsalter;
             n = N;
             TafelListe = tafelListe;
             BerechneGewichte();
-            BerechneTafeln();
+            TafelListe = BerechneTafeln(TafelListe);
         }
         public DAV2004() { }
 
@@ -446,12 +448,9 @@ namespace Tarifrechner.Klassen
             }
 
         }
-        public void BerechneTafeln()
+        public List<Tafel> BerechneTafeln(List<Tafel> tafelListe)
         {
-            for (int i = TafelListe.Count; i <= 121; i++)
-            {
-                TafelListe.Add(TafelListe[i - 1]);
-            }
+
             for (int x = 0; x < 2; x++)
             {
                 int jahr = Policenbeginnjahr;
@@ -499,19 +498,28 @@ namespace Tarifrechner.Klassen
                     }
                     ordnung2_Selektion *= faktor_2;
                     ordnung1_Selektion *= faktor_1;
+
+                    double qx_end = 0.0;
+
+                    if (Ordnung == "1.O. Selektion")
+                        qx_end = ordnung1_Selektion;
+                    else if (Ordnung == "1.O. Aggregat")
+                        qx_end = ordnung1_Aggregat;
+                    else if (Ordnung == "2.O. Selektion")
+                        qx_end = ordnung2_Selektion;
+                    else //2.O. Aggregat
+                        qx_end = ordnung2_Aggregat;
+
+
                     if (x == 0)
-                    {
-                        TafelListe[i].QX = ordnung1_Selektion;
-                    }
+                        tafelListe[i].QX = qx_end;
+
                     else
-                    {
-                        TafelListe[i].QY = ordnung1_Selektion;
-                    }
+                        tafelListe[i].QY = qx_end;
                     jahr++;
                 }
             }
-
+            return tafelListe;
         }
-
     }
 }

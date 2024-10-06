@@ -19,16 +19,16 @@
 
         <!-- Label und TextBox in der ersten Zeile -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
-            <Label Content="Nettobeitrag:" VerticalAlignment="Center" />
+            <Label Content="Nettobeitrag:" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <TextBox x:Name="Nettobeitrag" Width="200" Margin="10,0,0,0" IsReadOnly="True" />
-            <Label Content="Bruttobeitrag:" VerticalAlignment="Center" />
+            <Label Content="Bruttobeitrag:" VerticalAlignment="Center" HorizontalAlignment="Center" />
             <TextBox x:Name="Bruttobeitrag" Width="200" Margin="10,0,0,0" IsReadOnly="True" />
-            <Label Content="Zillmerprämie:" VerticalAlignment="Center" />
+            <Label Content="Zillmerprämie:" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <TextBox x:Name="Zillmerprämie" Width="200" Margin="10,0,0,0" IsReadOnly="True" />
-            <Label Content="alpha__z:" VerticalAlignment="Center" />
+            <Label Content="alpha__z:" VerticalAlignment="Center" HorizontalAlignment="Center" />
             <TextBox x:Name="alpha_z" Width="200" Margin="10,0,0,0" IsReadOnly="True" />
-            <Label Content="alpha__gamma:" VerticalAlignment="Center" />
-            <TextBox x:Name="alpha_gamma" Width="200" Margin="10,0,0,0" IsReadOnly="True" /> 
+            <Label Content="alpha__gamma:" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <TextBox x:Name="alpha_gamma" Width="200" Margin="10,0,0,0" IsReadOnly="True" />
         </StackPanel>
 
         <!-- DataGrid in der zweiten Zeile -->
@@ -42,6 +42,7 @@
                 <DataGridTextColumn Header="v" Binding="{Binding diskontierungsfaktor}" />
                 <DataGridTextColumn Header="LBW__Tod" Binding="{Binding lbw_tod}" />
                 <DataGridTextColumn Header="LBW__Erleben" Binding="{Binding lbw_erleben}" />
+                <DataGridTextColumn Header="LBW__Rente" Binding="{Binding lbw_rente}" />
                 <DataGridTextColumn Header="LBW__Prämie" Binding="{Binding lbw_praemie}" />
                 <DataGridTextColumn Header="LBW__Aufschubszeit" Binding="{Binding lbw_aufschubszeit}" />
                 <DataGridTextColumn Header="mVx" Binding="{Binding mVx}" />

@@ -8,7 +8,8 @@ namespace Tarifrechner
 {
     public class Vertragsteil
     {
-
+        // Policenbeginnjahr
+        public int Policenbeginnjahr { get; set; }
         // Eintrittsalter
         public int ea { get; set; }
         //Versicherungsdauer
@@ -19,6 +20,8 @@ namespace Tarifrechner
         public double leistung1 { get; set; }
         //Todesfallleistung
         public double leistung2 { get; set; }
+        //Rente
+        public double leistung3 { get; set; }
 
     }
 }

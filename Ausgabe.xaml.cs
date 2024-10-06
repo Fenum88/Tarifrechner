@@ -38,6 +38,7 @@ namespace Tarifrechner
         //Barwerte
         public double lbw_tod { get; set; }
         public double lbw_erleben { get; set; }
+        public double lbw_rente { get; set; }
         public double lbw_praemie { get; set; }
         public double lbw_aufschubszeit { get; set; }
         //Deckungsrueckstellungen
@@ -110,7 +111,9 @@ namespace Tarifrechner
         public void Berechne(Vertrag vertrag)
         {
             TafelListe = LeseSterbetafel("DAV2008.csv");
-            DAV2004 = new DAV2004(5.0, 10.0, 2024, vertrag.Vertragsteil.ea, vertrag.Vertragsteil.n, TafelListe);
+            TafeldDetails tafeldDetails = vertrag.Rechnungsgrundlage.TafeldDetails;
+            if (tafeldDetails.Name == "DAV2004")
+                DAV2004 = new DAV2004(tafeldDetails.T_1, tafeldDetails.T_2, vertrag.Vertragsteil.Policenbeginnjahr, vertrag.Vertragsteil.ea, vertrag.Vertragsteil.n, TafelListe, tafeldDetails.Ordnung);
             GesamtOutput = new();
             BerechneQx(vertrag);
 
@@ -131,6 +134,8 @@ namespace Tarifrechner
             double beitrag = GesamtOutput[0].lbw_tod * vertrag.Vertragsteil.leistung2 / GesamtOutput[0].lbw_praemie;
             // Berechnung fuer Erlebensfallleistung
             beitrag += GesamtOutput[0].lbw_erleben * vertrag.Vertragsteil.leistung1 / GesamtOutput[0].lbw_praemie;
+            // Berechnung fuer Rente
+            beitrag += GesamtOutput[0].lbw_rente * vertrag.Vertragsteil.leistung3 / GesamtOutput[0].lbw_praemie;
             return beitrag;
         }
 
@@ -139,6 +144,7 @@ namespace Tarifrechner
             // Berechnung fuer lbw
             double lbw_tod = GesamtOutput[0].lbw_tod * vertrag.Vertragsteil.leistung2;
             double lbw_erleben = GesamtOutput[0].lbw_erleben * vertrag.Vertragsteil.leistung1;
+            double lbw_rente = GesamtOutput[0].lbw_rente * vertrag.Vertragsteil.leistung3;
             double lbw_aufschubszeit = GesamtOutput[0].lbw_aufschubszeit;
             double lbw_praemie = GesamtOutput[0].lbw_praemie;
             // Berechnungen bbw
@@ -152,7 +158,7 @@ namespace Tarifrechner
             double gamma = vertrag.Rechnungsgrundlage.gamma;
             double delta = vertrag.Rechnungsgrundlage.delta;
 
-            double lbw_gesamt = (lbw_tod + lbw_erleben * (1 + delta));
+            double lbw_gesamt = (lbw_tod + lbw_erleben + lbw_rente * (1 + delta));
             double bbw_gesamt = bbw * (1 - t * alpha / lbw_praemie - beta - t * gamma * lbw_aufschubszeit / lbw_praemie);
 
             return lbw_gesamt / bbw_gesamt;
@@ -181,6 +187,7 @@ namespace Tarifrechner
             double zillmerpraemie = BerechnZillmerbeitrag(vertrag);
 
             (double alpha_z1, double alpha_gamma1) = BerechneAbschlusskosten(vertrag);
+            double delta = vertrag.Rechnungsgrundlage.delta;
 
             //Gesamte Abschlusskoten
             double abKo = alpha_z1 * vertrag.Vertragsteil.t * bruttopraemie / GesamtOutput[0].lbw_praemie;
@@ -190,28 +197,31 @@ namespace Tarifrechner
                 // Berechnung fuer lbw
                 double lbw_tod = GesamtOutput[i].lbw_tod * vertrag.Vertragsteil.leistung2;
                 double lbw_erleben = GesamtOutput[i].lbw_erleben * vertrag.Vertragsteil.leistung1;
-                double lbw = lbw_tod + lbw_erleben;
+                double lbw_rente = GesamtOutput[i].lbw_rente * vertrag.Vertragsteil.leistung3;
+                double lbw = lbw_tod + lbw_erleben + lbw_rente + (1 + delta);
+                double lbw_netto = lbw_tod + lbw_erleben + lbw_rente;
 
                 //Barwerte
                 double bbw = GesamtOutput[i].lbw_praemie;
 
-                double mVx = lbw - nettopraemie * bbw;
+                double mVx = lbw_netto - nettopraemie * bbw;
                 double mVx_z = mVx - abKo * bbw;
+                //double mVx_a_gez = 0.0;
+                //double mVx_B = 0.0;
                 GesamtOutput[i].mVx = mVx;
                 GesamtOutput[i].mVx_z = mVx_z;
                 if (i == 0)
                 {
                     GesamtOutput[i].mVx_a = -vertrag.Rechnungsgrundlage.alpha * vertrag.Vertragsteil.t * bruttopraemie;
                     GesamtOutput[i].mVx_a_gez = mVx_z;
+
                 }
                 else
                 {
-                    GesamtOutput[i].mVx_a = lbw - bbw * bruttopraemie;
-                    GesamtOutput[i].mVx_a_gez = lbw + GesamtOutput[i].gesamtkosten - bbw * bruttopraemie;
+                    GesamtOutput[i].mVx_a = lbw_netto + GesamtOutput[i].gesamtkosten - GesamtOutput[i].alpha_gamma_kosten - bbw * bruttopraemie;
+                    GesamtOutput[i].mVx_a_gez = lbw_netto + GesamtOutput[i].gesamtkosten - bbw * bruttopraemie;
                 }
-
-                GesamtOutput[i].mVx_a_gez = 0;
-                GesamtOutput[i].mVx_B = 0;
+                GesamtOutput[i].mVx_B = Math.Max(GesamtOutput[i].mVx_a_gez, 0);
             }
         }
 
@@ -250,11 +260,12 @@ namespace Tarifrechner
             {
                 double bbw = GesamtOutput[i].lbw_praemie;
                 double lbw_erleben = GesamtOutput[i].lbw_erleben;
+                double lbw_rente = GesamtOutput[i].lbw_rente * vt.leistung3;
                 double lbw_aufschubszeit = GesamtOutput[i].lbw_aufschubszeit;
                 if (i < vt.t)
                     GesamtOutput[i].beta_kosten = bbw * beta * bruttopraemie;
                 GesamtOutput[i].gamma_kosten = lbw_aufschubszeit * gamma * bruttopraemie * vt.t;
-                GesamtOutput[i].delta_kosten = lbw_erleben * delta;
+                GesamtOutput[i].delta_kosten = lbw_rente * delta;
                 GesamtOutput[i].alpha_gamma_kosten = abKlo * lbw_aufschubszeit;
                 GesamtOutput[i].gesamtkosten = GesamtOutput[i].beta_kosten + GesamtOutput[i].gamma_kosten + GesamtOutput[i].delta_kosten + GesamtOutput[i].alpha_gamma_kosten;
             }
@@ -302,7 +313,7 @@ namespace Tarifrechner
                 double v = GesamtOutput[i].diskontierungsfaktor;
                 GesamtOutput[i].lbw_praemie = wertVorjahr * px * v + 1;
             }
-            //Berechnung von LBW Erlebensfall lbw_erleben
+            //Berechnung von LBW Aufschubszeit lbw_aufschubszeit
             GesamtOutput[vt.n].lbw_aufschubszeit = 0;
             for (int i = vt.n - 1; i > -1; i--)
             {
@@ -310,6 +321,18 @@ namespace Tarifrechner
                 double px = (1 - GesamtOutput[i].qx);
                 double v = GesamtOutput[i].diskontierungsfaktor;
                 GesamtOutput[i].lbw_aufschubszeit = wertVorjahr * px * v + 1;
+            }
+            //Berechnung von LBW Rente lbw_rente
+            GesamtOutput[GesamtOutput.Count - 1].lbw_rente = 1;
+            for (int i = GesamtOutput.Count - 2; i >= 0; i--)
+            {
+                double wertVorjahr = GesamtOutput[i + 1].lbw_rente;
+                double px = (1 - GesamtOutput[i].qx);
+                double v = GesamtOutput[i].diskontierungsfaktor;
+                wertVorjahr *= px * v;
+                if (i >= vt.n)
+                    wertVorjahr += 1;
+                GesamtOutput[i].lbw_rente = wertVorjahr;
             }
 
         }

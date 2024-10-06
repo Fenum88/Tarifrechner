@@ -38,12 +38,15 @@ namespace Tarifrechner
         {
             Rechnungsgrundlage rg = Vertrag.Rechnungsgrundlage;
             Vertragsteil vt = Vertrag.Vertragsteil;
+            TafeldDetails tafeldDetails = rg.TafeldDetails;
 
+            vt.Policenbeginnjahr = int.Parse(PolicenbeginnjahrTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
             vt.ea = int.Parse(EintrittsalterTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
             vt.n = int.Parse(VersicherungsdauerTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
             vt.t = int.Parse(BeitragszahldauerTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
             vt.leistung1 = double.Parse(ErlebensfallleistungTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
             vt.leistung2 = double.Parse(TodesfallleistungTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
+            vt.leistung3 = double.Parse(RentenleistungTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
 
             rg.mannAnteil = double.Parse(MaenneranteilTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
             rg.zins = double.Parse(ZinsTextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
@@ -54,12 +57,43 @@ namespace Tarifrechner
 
             if (ZinsComboBox.SelectedItem != null)
             {
-                rg.isKonstantZins =  ZinsComboBox.SelectedItem.ToString().Contains("konstant");
+                rg.isKonstantZins = ZinsComboBox.SelectedItem.ToString().Contains("konstant");
             }
             else
             {
                 rg.isKonstantZins = true;
             }
+
+            //Details fuer die Tafelauswahl
+            if (TafelBox.SelectedItem != null)
+            {
+                tafeldDetails.Name = TafelBox.SelectedItem.ToString().Contains("2004") ? "DAV2004" : "DAV2008";
+            }
+            else
+            {
+                tafeldDetails.Name = "DAV2004";
+            }
+
+            if (OrdnungSelektionBox != null)
+            {
+                if (OrdnungSelektionBox.SelectedItem.ToString().Contains("Selektion"))
+                {
+                    tafeldDetails.Ordnung = OrdnungSelektionBox.SelectedItem.ToString().Contains("1.") ? "1.O. Selektion" : "2.O. Selektion";
+                }
+                else
+                {
+                    tafeldDetails.Ordnung = OrdnungSelektionBox.SelectedItem.ToString().Contains("1.") ? "1.O. Aggregat" : "2.O. Aggregat";
+                }
+            }
+            else
+            {
+                tafeldDetails.Ordnung = "1.O. Selektion";
+            }
+
+            tafeldDetails.T_1 = double.Parse(t1TextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
+            tafeldDetails.T_2 = double.Parse(t2TextBox.Text, System.Globalization.CultureInfo.InvariantCulture);
+
+
             return Vertrag;
         }
 

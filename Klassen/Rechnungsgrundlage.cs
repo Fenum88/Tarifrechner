@@ -22,6 +22,12 @@ namespace Tarifrechner.Klassen
         public double gamma { get; set; }
         //Rentenbezugskosten
         public double delta { get; set; }
-        public Rechnungsgrundlage() { }
+        // Details zu der Tafel
+        public TafeldDetails TafeldDetails { get; set; }
+
+        public Rechnungsgrundlage()
+        {
+            TafeldDetails = new();
+        }
     }
 }

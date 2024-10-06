@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tarifrechner"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="600" Width="800">
     <Grid>
         <!-- Navigation Bar -->
         <StackPanel Orientation="Horizontal" Background="LightGray" Height="50" VerticalAlignment="Top">
@@ -16,6 +16,6 @@
         <!-- Frame für Seiteninhalt -->
         <Frame Name="MainFrame" Margin="0,50,0,0" NavigationUIVisibility="Hidden"/>
     </Grid>
-    
-    
+
+
 </Window>
